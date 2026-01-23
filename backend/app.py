@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 import pandas as pd
 from model.forecast import generate_forecast
 from flask_cors import CORS
-
+from utils.trends import fetch_realtime_trends
 
 app = Flask(__name__)
 CORS(app)
@@ -74,6 +74,11 @@ def feedback_api():
     )
 
     return jsonify(result.to_dict(orient="records"))
+
+@app.route("/trends/scan", methods=["GET"])
+def scan_trends():
+    trends = fetch_realtime_trends()
+    return jsonify(trends)
 
 
 if __name__ == "__main__":
